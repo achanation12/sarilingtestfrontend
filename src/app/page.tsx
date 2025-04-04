@@ -1,9 +1,9 @@
 "use client";
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import Cookies from "js-cookie";
 
 export default function Home() {
-
   interface Product {
     id: number;
     name: string;
@@ -12,138 +12,106 @@ export default function Home() {
     image: string;
   }
   
-  const [items, setItems] = useState<any[]>([]);
+  interface CartItem {
+    id: number;
+    name: string;
+    price: number;
+    image: string;
+    qty: number;
+  }
+  
+  const [items, setItems] = useState<CartItem[]>([]);
   const [isOpenCart, setIsOpenCart] = useState(false);
   const [products, setProducts] = useState<Product[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
-
-  const formatRupiah = (num : number) => {
+  
+  const formatRupiah = (num: number) => {
     return `Rp ${num.toLocaleString("id-ID")}`;
   };
-
+  
   useEffect(() => {
-    // Mengambil data dari localStorage
-    if (typeof window !== "undefined") {
-      const storedItems = JSON.parse(localStorage.getItem("cart") || "[]") || [];
-      setItems(storedItems);
+    // Ambil cart dari cookie saat komponen mount
+    const cartCookie = Cookies.get("cart");
+    if (cartCookie) {
+      try {
+        setItems(JSON.parse(cartCookie));
+      } catch (e) {
+        console.error("Error parsing cookie:", e);
+        setItems([]);
+      }
     }
-    //Dapatkan data produk dari API
+  
+    // Fetch produk dari API
     fetch("https://pasi.my.id/api/products")
       .then((res) => res.json())
-      .then((data) => {
-        setProducts(data.data); // Sesuaikan dengan struktur API
-      })
-      .catch((error) => {
-        console.error("Error fetching menu:", error);
-      });
+      .then((data) => setProducts(data.data))
+      .catch((error) => console.error("Error fetching menu:", error));
   }, []);
-  // Filter produk berdasarkan input pencarian
+  
   const filteredProducts = products.filter((product) =>
     product.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
-  // Fungsi untuk menambah item ke localStorage
-  const addItem = (newItem: { id: number; name: string; price: number, image: string }) => {
-    const existingCart = JSON.parse(localStorage.getItem("cart") || "[]");
   
-    // Cek apakah item sudah ada di dalam cart
-    const existingIndex = existingCart.findIndex((item: any) => item.id === newItem.id);
+  const addItem = (newItem: { id: number; name: string; price: number; image: string }) => {
+    const cart: CartItem[] = items.slice();
+    const existingIndex = cart.findIndex((item) => item.id === newItem.id);
   
     if (existingIndex !== -1) {
-      // Jika item sudah ada, update qty
-      existingCart[existingIndex].qty += 1;
+      cart[existingIndex].qty += 1;
     } else {
-      // Jika item belum ada, tambahkan dengan qty 1
-      existingCart.push({ ...newItem, qty: 1 });
+      cart.push({ ...newItem, qty: 1 });
     }
   
-    // Simpan perubahan ke state & localStorage
-    setItems(existingCart);
-    localStorage.setItem("cart", JSON.stringify(existingCart));
-
-    //Notifikasi tambah item
+    setItems(cart);
+    Cookies.set("cart", JSON.stringify(cart));
+  
+    // Toast
     const toast = document.createElement("div");
     toast.className = "fixed bottom-4 right-4 bg-green-500 text-white p-4 rounded-lg shadow-lg z-50";
     toast.innerText = `${newItem.name} ditambahkan ke keranjang`;
     document.body.appendChild(toast);
-    setTimeout(() => {
-      document.body.removeChild(toast);
-    }
-    , 3000);
+    setTimeout(() => document.body.removeChild(toast), 3000);
   };
-  // Fungsi untuk menghapus item dari localStorage
+  
   const removeItem = (itemId: number) => {
-    // Ambil cart dari localStorage
-    let updatedCart = JSON.parse(localStorage.getItem("cart") || "[]");
-  
-    // Filter item yang tidak memiliki id yang ingin dihapus
-    updatedCart = updatedCart.filter((item: any) => item.id !== itemId);
-  
-    // Simpan perubahan ke state & localStorage
+    const updatedCart = items.filter((item) => item.id !== itemId);
     setItems(updatedCart);
-    localStorage.setItem("cart", JSON.stringify(updatedCart));
+    Cookies.set("cart", JSON.stringify(updatedCart));
   };
-  // Hitung total harga
+  
   const calculateTotalPrice = () => {
-    const cart = JSON.parse(localStorage.getItem("cart") || "[]");
-  
-    // Hitung total harga dengan reduce
-    const totalPrice = cart.reduce((total: number, item: any) => {
-      return total + item.price * item.qty; // Harga * qty per item
-    }, 0); // Mulai dari 0
-  
-    return totalPrice;
+    return items.reduce((total, item) => total + item.price * item.qty, 0);
   };
-  // Hitung total item
+  
   const calculateTotalItem = () => {
-    const cart = JSON.parse(localStorage.getItem("cart") || "[]");
-  
-    // Hitung total item dengan reduce
-    return cart.length;
+    return items.length;
   };
-  // Fungsi untuk mengirim data ke API
+  
   const sendCartDataToApi = async () => {
-    if (typeof window !== "undefined") {
-      // Ambil cart dari localStorage
-      const cart = JSON.parse(localStorage.getItem("cart") || "[]");
-
-      // Pastikan cart ada sebelum mengirim
-      if (cart.length > 0) {
-        fetch("https://pasi.my.id/api/checkout", {
-          method: "POST",
-          headers: {
-              "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-              items: cart,
-              total_price: calculateTotalPrice(),
-          }),
-        })
-          .then((res) => {
-              if (!res.ok) {
-                  // Tangani status error dengan lebih jelas
-                  throw new Error(`HTTP error! Status: ${res.status}`);
-              }
-              return res.json();
-          })
-          .then((data) => {
-            
-              //Notifikasi tambah item
-              const toast = document.createElement("div");
-              toast.className = "fixed bottom-4 right-4 bg-green-500 text-white p-4 rounded-lg shadow-lg z-50";
-              toast.innerText = `${data.message}, Total ${formatRupiah(data.total_price)}`;
-              document.body.appendChild(toast);
-              setTimeout(() => {
-                document.body.removeChild(toast);
-              }
-              , 3000);
-              console.log(data); // Tangani data respons di sini
-          })
-          .catch((error) => {
-              console.log("Fetch error:", error);
-          });      
-      }
-    }
-  }
+    if (items.length === 0) return;
+  
+    fetch("https://pasi.my.id/api/checkout", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        items: items,
+        total_price: calculateTotalPrice(),
+      }),
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
+        return res.json();
+      })
+      .then((data) => {
+        const toast = document.createElement("div");
+        toast.className = "fixed bottom-4 right-4 bg-green-500 text-white p-4 rounded-lg shadow-lg z-50";
+        toast.innerText = `${data.message}, Total ${formatRupiah(data.total_price)}`;
+        document.body.appendChild(toast);
+        setTimeout(() => document.body.removeChild(toast), 3000);
+        console.log(data);
+      })
+      .catch((error) => console.log("Fetch error:", error));
+  };
   return (
     <div>
       {/* <!-- ========== HEADER ========== --> */}
