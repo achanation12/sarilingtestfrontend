@@ -16,6 +16,7 @@ export default [
   {
     rules: {
       "no-unused-vars": "off", // Nonaktifkan warning untuk variabel tidak terpakai
+      "@typescript-eslint/no-explicit-any": "off", // Nonaktifkan warning untuk penggunaan tipe any
       // kamu bisa tambahkan lainnya juga
       // "react-hooks/exhaustive-deps": "off",
     },
