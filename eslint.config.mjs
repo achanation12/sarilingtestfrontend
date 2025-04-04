@@ -9,13 +9,15 @@ const compat = new FlatCompat({
   baseDirectory: __dirname,
 });
 
-const eslintConfig = [
+export default [
   ...compat.extends("next/core-web-vitals", "next/typescript"),
+
+  // Tambahkan aturan override di bawah ini
   {
     rules: {
-      "no-unused-vars": "off",
+      "no-unused-vars": "off", // Nonaktifkan warning untuk variabel tidak terpakai
+      // kamu bisa tambahkan lainnya juga
+      // "react-hooks/exhaustive-deps": "off",
     },
   },
 ];
-
-export default eslintConfig;
