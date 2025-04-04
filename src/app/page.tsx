@@ -211,7 +211,7 @@ export default function Home() {
                             {items.map((item) => (
                               <li className="flex py-6" key={item.id}>
                                 <div className="size-24 shrink-0 overflow-hidden rounded-xs border border-gray-200">
-                                  <Image src={item.image} alt="Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt." className="size-full object-cover"/>
+                                  <Image width={200} height={200} src={item.image} alt="Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt." className="size-full object-cover"/>
                                 </div>
 
                                 <div className="ml-4 flex flex-1 flex-col">
@@ -281,7 +281,9 @@ export default function Home() {
                     <Image
                         className="w-full h-full object-cover rounded-md"
                         src={product.image}
-                        alt={product.name}/>
+                        alt={product.name}
+                        width={200}
+                        height={200}/>
                     <div
                         className="absolute z-10 bottom-3 left-0 mx-3 p-3 bg-white w-[calc(100%-24px)] rounded-xl shadow-sm shadow-transparent transition-all duration-500 group-hover:shadow-indigo-200 group-hover:bg-indigo-50">
                         <div className="flex items-center justify-between mb-2">

@@ -11,12 +11,6 @@ const compat = new FlatCompat({
 
 const eslintConfig = [
   ...compat.extends("next/core-web-vitals", "next/typescript"),
-  {
-    rules: {
-      "react/react-in-jsx-scope": "off", // contoh mematikan rule spesifik
-      "@next/next/no-img-element": "off", // contoh rule Next.js
-    },
-  },
 ];
 
 export default eslintConfig;
