@@ -10,16 +10,13 @@ const compat = new FlatCompat({
 });
 
 const eslintConfig = [
-  ...compat.extends({
-    extends: [
-      "next/core-web-vitals",
-      "next/typescript",
-    ],
+  ...compat.extends("next/core-web-vitals", "next/typescript"),
+  {
     rules: {
-      'react/no-unescaped-entities': 'off',
-      '@next/next/no-page-custom-font': 'off',
+      "react/react-in-jsx-scope": "off", // contoh mematikan rule spesifik
+      "@next/next/no-img-element": "off", // contoh rule Next.js
     },
-  }),
+  },
 ];
 
 export default eslintConfig;
