@@ -27,7 +27,7 @@ export default function Home() {
       setItems(storedItems);
     }
     //Dapatkan data produk dari API
-    fetch("http://127.0.0.1:8000/api/products")
+    fetch("https://pasi.my.id/api/products")
       .then((res) => res.json())
       .then((data) => {
         setProducts(data.data); // Sesuaikan dengan struktur API
@@ -107,7 +107,7 @@ export default function Home() {
 
       // Pastikan cart ada sebelum mengirim
       if (cart.length > 0) {
-        fetch("http://127.0.0.1:8000/api/checkout", {
+        fetch("https://pasi.my.id/api/checkout", {
           method: "POST",
           headers: {
               "Content-Type": "application/json",
