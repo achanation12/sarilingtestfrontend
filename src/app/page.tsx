@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import Image from "next/image";
 
 export default function Home() {
 
@@ -210,7 +211,7 @@ export default function Home() {
                             {items.map((item) => (
                               <li className="flex py-6" key={item.id}>
                                 <div className="size-24 shrink-0 overflow-hidden rounded-xs border border-gray-200">
-                                  <img src={item.image} alt="Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt." className="size-full object-cover"/>
+                                  <Image src={item.image} alt="Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt." className="size-full object-cover"/>
                                 </div>
 
                                 <div className="ml-4 flex flex-1 flex-col">
@@ -277,7 +278,7 @@ export default function Home() {
             {filteredProducts.map((product) => (
               <div key={product.id}>
                 <span onClick={() => addItem({id: product.id, name: product.name, price: product.price, image: product.image})} className="relative bg-cover group rounded-3xl bg-center overflow-hidden mx-auto sm:mr-0 xl:mx-auto cursor-pointer">
-                    <img 
+                    <Image
                         className="w-full h-full object-cover rounded-md"
                         src={product.image}
                         alt={product.name}/>
