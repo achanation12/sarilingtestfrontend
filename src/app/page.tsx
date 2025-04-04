@@ -17,7 +17,7 @@ export default function Home() {
     name: string;
     price: number;
     image: string;
-    qty: number;
+    quantity: number;
   }
   
   const [items, setItems] = useState<CartItem[]>([]);
@@ -57,9 +57,9 @@ export default function Home() {
     const existingIndex = cart.findIndex((item) => item.id === newItem.id);
   
     if (existingIndex !== -1) {
-      cart[existingIndex].qty += 1;
+      cart[existingIndex].quantity += 1;
     } else {
-      cart.push({ ...newItem, qty: 1 });
+      cart.push({ ...newItem, quantity: 1 });
     }
   
     setItems(cart);
@@ -80,7 +80,7 @@ export default function Home() {
   };
   
   const calculateTotalPrice = () => {
-    return items.reduce((total, item) => total + item.price * item.qty, 0);
+    return items.reduce((total, item) => total + item.price * item.quantity, 0);
   };
   
   const calculateTotalItem = () => {
@@ -193,7 +193,7 @@ export default function Home() {
                                     <p className="mt-1 text-sm text-gray-500">{formatRupiah(item.price)}</p>
                                   </div>
                                   <div className="flex flex-1 items-end justify-between text-sm">
-                                    <p className="text-gray-500">Qty {item.qty}</p>
+                                    <p className="text-gray-500">Qty {item.quantity}</p>
 
                                     <div className="flex">
                                       <button onClick={() => removeItem(item.id)} type="button" className="font-medium text-indigo-600 hover:text-indigo-500 hover:cursor-pointer">Remove</button>
