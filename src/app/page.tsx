@@ -114,7 +114,6 @@ export default function Home() {
   };
   return (
     <div>
-      {/* <!-- ========== HEADER ========== --> */}
         <header className="flex flex-wrap lg:justify-start lg:flex-nowrap z-50 w-full py-7">
           <nav className="relative max-w-7xl w-full flex flex-wrap lg:grid lg:grid-cols-12 basis-full items-center px-4 md:px-6 lg:px-8 mx-auto">
             <div className="lg:col-span-3 flex items-center">
@@ -124,8 +123,6 @@ export default function Home() {
               <div className="ms-1 sm:ms-2">
               </div>
             </div>
-
-            {/* <!-- Button Group --> */}
             <div className="flex items-center gap-x-1 lg:gap-x-2 ms-auto py-1 lg:ps-6 lg:order-3 lg:col-span-3">
               <button onClick={() => setIsOpenCart(true)} type="button" className=" hover:cursor-pointer py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium text-nowrap rounded-xl bg-white border border-gray-200 text-black hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-cart" viewBox="0 0 16 16">
@@ -133,24 +130,11 @@ export default function Home() {
                 </svg>
                 <span className="text-[8pt] bg-red-500 rounded-full w-[20px] h-[20px] items-center justify-center flex text-white">{calculateTotalItem()}</span>
               </button>
-
-              {/* <div className="lg:hidden">
-                <button type="button" className="hs-collapse-toggle size-9.5 flex justify-center items-center text-sm font-semibold rounded-xl border border-gray-200 text-black hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none" id="hs-navbar-hcail-collapse" aria-expanded="false" aria-controls="hs-navbar-hcail" aria-label="Toggle navigation" data-hs-collapse="#hs-navbar-hcail">
-                  <svg className="hs-collapse-open:hidden shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" x2="21" y1="6" y2="6"/><line x1="3" x2="21" y1="12" y2="12"/><line x1="3" x2="21" y1="18" y2="18"/></svg>
-                  <svg className="hs-collapse-open:block hidden shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-                </button>
-              </div> */}
             </div>
-            {/* <!-- End Button Group --> */}
-
-            {/* <!-- Collapse --> */}
             <div id="hs-navbar-hcail" className="hs-collapse hidden overflow-hidden transition-all duration-300 basis-full grow lg:block lg:w-auto lg:basis-auto lg:order-2 lg:col-span-6" aria-labelledby="hs-navbar-hcail-collapse">
             </div>
-            {/* <!-- End Collapse --> */}
           </nav>
         </header>
-        {/* <!-- ========== END HEADER ========== --> */}
-        {/* <!-- ========== CART ========== --> */}
         <div className={`relative z-50 ${!isOpenCart ? "hidden" : "block"}`} aria-labelledby="slide-over-title" role="dialog" aria-modal="true">
           <div className="fixed inset-0 bg-gray-500/75 transition-opacity" aria-hidden="true"></div>
 
@@ -188,7 +172,6 @@ export default function Home() {
                                       <h3>
                                         <a href="#">{item.name}</a>
                                       </h3>
-                                      {/* <p className="ml-4"></p> */}
                                     </div>
                                     <p className="mt-1 text-sm text-gray-500">{formatRupiah(item.price)}</p>
                                   </div>
@@ -226,10 +209,6 @@ export default function Home() {
             </div>
           </div>
         </div>
-
-        {/* <!-- ========== END CART ========== --> */}
-
-
         <div className="bg-white">
           <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
             
@@ -256,7 +235,6 @@ export default function Home() {
                         className="absolute z-10 bottom-3 left-0 mx-3 p-3 bg-white w-[calc(100%-24px)] rounded-xl shadow-sm shadow-transparent transition-all duration-500 group-hover:shadow-indigo-200 group-hover:bg-indigo-50">
                         <div className="flex items-center justify-between mb-2">
                             <h6 className="font-semibold text-base leading-7 text-black ">{product.name}</h6>
-                            {/* <h6 className="font-semibold text-base leading-7 text-indigo-600 text-right"></h6> */}
                         </div>
                         <p className="text-xs leading-5 text-gray-500">{formatRupiah(product.price)}</p>
                     </div>
